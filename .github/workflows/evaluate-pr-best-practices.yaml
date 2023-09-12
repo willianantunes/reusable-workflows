@@ -5,22 +5,22 @@ on:
 
 jobs:
   comment:
-#    if: >-
-#      github.event.pull_request.opened != 'octobot' &&
-#      github.event.pull_request.user.login != 'dependabot[bot]'
+    if: >-
+      github.event_name == 'pull_request' && github.event.action == 'opened'
     runs-on: ubuntu-latest
     steps:
-      - run: echo '${{ toJSON(github.event) }}'
-      - run: echo "event name is:" ${{ github.event }}
-      - run: echo "event name is:" ${{ github.event_name }}
-      - run: echo "event type is:" ${{ github.event.action }}
-#      - name: "Comment about changes we can't accept"
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#          PR: ${{ github.event.pull_request.html_url }}
-#        run: |
-#          gh pr edit $PR --add-label 'invalid'
-#          gh pr comment $PR --body 'It looks like you edited `package*.json`, `.github/CODEOWNERS`, or `.github/workflows/**`. We do not allow contributions to these files. Please review our [contributing guidelines](https://github.com/octo-org/octo-repo/blob/main/CONTRIBUTING.md) for what contributions are accepted.'
+      - uses: actions/checkout@v3
+        with:
+          repository: willianantunes/reusable-workflows
+          path: .reusable-workflows
+      - run: ls -la
+      - run: cat ./.reusable-workflows/settings/comment.md
+      - name: "Comment about important documents"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR: ${{ github.event.pull_request.html_url }}
+        run: |
+          gh pr comment $PR --body="$(cat ./.reusable-workflows/settings/comment.md)"
   validate-pr-title:
     name: "Validate PR title"
     runs-on: ubuntu-latest
