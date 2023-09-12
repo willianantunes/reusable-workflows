@@ -1,7 +1,7 @@
 name: Evaluate PR best practices
 
 on:
-  workflow_dispatch:
+  workflow_call:
 
 jobs:
   random-output-1:
