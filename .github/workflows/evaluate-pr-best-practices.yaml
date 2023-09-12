@@ -11,16 +11,20 @@ jobs:
         uses: "pascalgn/size-label-action@v0.5.0"
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          # https://github.com/pascalgn/size-label-action/blob/b1f4946f381d38d3b5960f76b514afdfef39b609/index.js#L117
+          DEBUG_ACTION: true
           IGNORED: |
             yarn.lock
+            package-lock.json
             poetry.lock
         with:
           sizes: >
             {
-              "50": "code size: excellent",
-              "150": "code size: good",
-              "250": "code size: large",
-              "251": "code size: too large"
+              "0": "excellent",
+              "100": "good",
+              "200": "large",
+              "250": "huge",
+              "500": "enormous"
             }
   random-output-1:
     runs-on: ubuntu-latest
