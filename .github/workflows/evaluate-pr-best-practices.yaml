@@ -4,11 +4,27 @@ on:
   workflow_call:
 
 jobs:
+  size-label:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Evaluate code size and apply label"
+        uses: "pascalgn/size-label-action@v0.5.0"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          IGNORED: |
+            yarn.lock
+            poetry.lock
+        with:
+          sizes: >
+            {
+              "50": "code size: excellent",
+              "150": "code size: good",
+              "250": "code size: large",
+              "251": "code size: too large"
+            }
   random-output-1:
     runs-on: ubuntu-latest
     steps:
-      # Necessary to access local action
-      # https://stackoverflow.com/a/75735736/3899136
       - uses: actions/checkout@v3
         with:
           repository: willianantunes/reusable-workflows
