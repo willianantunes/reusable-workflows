@@ -7,9 +7,15 @@ jobs:
   random-output-1:
     runs-on: ubuntu-latest
     steps:
+      # Necessary to access local action
+      # https://stackoverflow.com/a/75735736/3899136
+      - uses: actions/checkout@v3
+        with:
+          repository: willianantunes/reusable-workflows
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Local Action Call
         id: local-action
-        uses: willianantunes/reusable-workflows/.github/workflows/shared/random-output-1@main
+        uses: ./shared/random-output-1
       - name: Local Action Output
         run: echo "${{ steps.local-action.outputs.random }}"
   random-output-one:
