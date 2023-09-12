@@ -4,6 +4,17 @@ on:
   workflow_call:
 
 jobs:
+  triage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          repository: willianantunes/reusable-workflows
+          path: .reusable-workflows
+      - uses: actions/labeler@v4
+        with:
+          sync-labels: true
+          configuration-path: ./.reusable-workflows/settings/labeler.yml
   size-label:
     runs-on: ubuntu-latest
     steps:
@@ -26,20 +37,3 @@ jobs:
               "250": "huge",
               "500": "enormous"
             }
-  random-output-1:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          repository: willianantunes/reusable-workflows
-          path: .reusable-workflows
-      - name: Local Action Call
-        id: local-action
-        uses: ./.reusable-workflows/shared/random-output-1
-      - name: Local Action Output
-        run: echo "${{ steps.local-action.outputs.random }}"
-  random-output-one:
-    runs-on: ubuntu-latest
-    steps:
-      - run: |
-          echo "Situational questions..."
