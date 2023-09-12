@@ -4,7 +4,15 @@ on:
   workflow_call:
 
 jobs:
+  main:
+    name: "Validate PR title"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: amannn/action-semantic-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   triage:
+    name: "Basic triage"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -16,10 +24,10 @@ jobs:
           sync-labels: true
           configuration-path: ./.reusable-workflows/settings/labeler.yml
   size-label:
+    name: "Evaluate code size and apply label"
     runs-on: ubuntu-latest
     steps:
-      - name: "Evaluate code size and apply label"
-        uses: "pascalgn/size-label-action@v0.5.0"
+      - uses: "pascalgn/size-label-action@v0.5.0"
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           # https://github.com/pascalgn/size-label-action/blob/b1f4946f381d38d3b5960f76b514afdfef39b609/index.js#L117
