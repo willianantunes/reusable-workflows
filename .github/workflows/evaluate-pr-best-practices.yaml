@@ -1,5 +1,8 @@
 name: Evaluate PR best practices
 
+on:
+  workflow_dispatch:
+
 jobs:
   random-output-1:
     runs-on: ubuntu-latest
