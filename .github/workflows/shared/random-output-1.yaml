@@ -1,0 +1,25 @@
+name: 'Random output 1'
+description: 'Run and give you outputs'
+
+outputs:
+  random:
+    description: "Random number output"
+    value: ${{ steps.step-create-output.outputs.random }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+    - name: Create the output
+      id: step-create-output
+      shell: bash
+      run: |
+        echo List directory files
+        ls -la
+        echo "::set-output name=random::$(echo $RANDOM)"
+    - run: |
+        echo "Waiting 5 seconds..."
+        sleep 5
+        echo "Wig 🤔"
+      shell: bash

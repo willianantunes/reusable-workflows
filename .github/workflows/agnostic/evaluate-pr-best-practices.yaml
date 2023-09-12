@@ -1,0 +1,16 @@
+name: Evaluate PR best practices
+
+jobs:
+  random-output-1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Local Action Call
+        id: local-action
+        uses: ./shared/random-output-1.yaml
+      - name: Local Action Output
+        run: echo "${{ steps.local-action.outputs.random }}"
+  random-output-one:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "Situational questions..."
