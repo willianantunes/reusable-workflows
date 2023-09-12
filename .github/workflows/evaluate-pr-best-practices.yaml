@@ -9,7 +9,7 @@ jobs:
     steps:
       - name: Local Action Call
         id: local-action
-        uses: ./shared/random-output-1.yaml
+        uses: willianantunes/reusable-workflows/.github/workflows/shared/random-output-1@main
       - name: Local Action Output
         run: echo "${{ steps.local-action.outputs.random }}"
   random-output-one:
