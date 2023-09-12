@@ -12,10 +12,10 @@ jobs:
       - uses: actions/checkout@v3
         with:
           repository: willianantunes/reusable-workflows
-          token: ${{ secrets.GITHUB_TOKEN }}
+          path: .reusable-workflows
       - name: Local Action Call
         id: local-action
-        uses: ./shared/random-output-1
+        uses: ./.reusable-workflows/shared/random-output-1
       - name: Local Action Output
         run: echo "${{ steps.local-action.outputs.random }}"
   random-output-one:

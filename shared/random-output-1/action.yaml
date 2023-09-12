@@ -9,8 +9,6 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - name: Check out code
-      uses: actions/checkout@v2
     - name: Create the output
       id: step-create-output
       shell: bash
