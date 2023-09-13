@@ -1,0 +1,20 @@
+name: 'Label checker'
+description: 'GitHub Action to check pull requests (PRs) for the presence or absence of specified labels'
+
+inputs:
+  pr_id:
+    required: true
+    description: "Pull request ID such as '2'"
+  repo:
+    required: true
+    description: "Repository URL such as 'https://github.com/willianantunes/testing-repository'"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Check labels
+      shell: bash
+      run: |
+        python ${{ github.action_path }}/label_checker_handler.py \
+        --repo "${{ inputs.repo }}" \
+        --pull-request-id "${{ inputs.pr_id }}"
