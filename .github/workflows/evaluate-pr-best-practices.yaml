@@ -4,9 +4,28 @@ on:
   workflow_call:
 
 jobs:
+  validate-pr-description:
+    if: >-
+      github.event_name == 'pull_request' && (github.event.action == 'edited' || github.event.action == 'opened')
+    name: "Check links in the description"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          repository: willianantunes/reusable-workflows
+          path: .reusable-workflows
+      - name: Check description
+        uses: ./.reusable-workflows/shared/pr_description_validator
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          pr_id: ${{ github.event.pull_request.number }}
+          repo: ${{ github.event.repository.html_url }}
   comment:
+    # It will run only once, when the PR opens
     if: >-
       github.event_name == 'pull_request' && github.event.action == 'opened'
+    name: "Insert welcome comment"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -22,6 +41,9 @@ jobs:
         run: |
           gh pr comment $PR --body="$(cat ./.reusable-workflows/settings/comment.md)"
   validate-pr-title:
+    if: >-
+      github.event_name == 'pull_request' && 
+      (github.event.action == 'edited' || github.event.action == 'opened')
     name: "Validate PR title"
     runs-on: ubuntu-latest
     steps:
@@ -29,6 +51,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   triage:
+    if: >-
+      github.event_name == 'pull_request' && 
+      (github.event.action == 'synchronize' || github.event.action == 'opened' || github.event.action == 'reopened')
     name: "Basic triage"
     runs-on: ubuntu-latest
     steps:
@@ -41,6 +66,9 @@ jobs:
           sync-labels: true
           configuration-path: ./.reusable-workflows/settings/labeler.yml
   size-label:
+    if: >-
+      github.event_name == 'pull_request' && 
+      (github.event.action == 'synchronize' || github.event.action == 'opened' || github.event.action == 'reopened')
     name: "Evaluate code size and apply label"
     runs-on: ubuntu-latest
     steps:
