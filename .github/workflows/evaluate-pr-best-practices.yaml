@@ -4,6 +4,24 @@ on:
   workflow_call:
 
 jobs:
+  commit-checker:
+    if: >-
+      github.event_name == 'pull_request' && 
+      (github.event.action == 'synchronize' || github.event.action == 'opened' || github.event.action == 'reopened')
+    name: "Check commit messages for Conventional Commits formatting"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          repository: willianantunes/reusable-workflows
+          path: .reusable-workflows
+      - name: Check commits
+        uses: ./.reusable-workflows/shared/commit_checker
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          pr_id: ${{ github.event.pull_request.number }}
+          repo: ${{ github.event.repository.html_url }}
   label-checker:
     if: >-
       github.event_name == 'pull_request' && 

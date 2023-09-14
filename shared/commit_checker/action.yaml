@@ -1,0 +1,26 @@
+name: 'Conventional commit checker'
+description: 'GitHub Action to check if commits match conventional commits standard'
+
+inputs:
+  pr_id:
+    required: true
+    description: "Pull request ID such as '2'"
+  repo:
+    required: true
+    description: "Repository URL such as 'https://github.com/willianantunes/testing-repository'"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install NPM packages
+      shell: bash
+      run: |
+        cd ${{ github.action_path }}
+        npm ci
+    - name: Check commits
+      shell: bash
+      run: |
+        cd ${{ github.action_path }}
+        python commit_checker_handler.py \
+        --repo "${{ inputs.repo }}" \
+        --pull-request-id "${{ inputs.pr_id }}"

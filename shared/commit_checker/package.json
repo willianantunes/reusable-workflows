@@ -1,0 +1,12 @@
+{
+  "name": "label-checker",
+  "version": "0.1.0",
+  "private": true,
+  "description": "",
+  "main": "index.js",
+  "devDependencies": {
+    "@commitlint/cli": "^17.7.1",
+    "@commitlint/config-conventional": "^17.7.0",
+    "commitlint-format-json": "^1.1.0"
+  }
+}
